@@ -29,6 +29,9 @@ quartus:
 system_console:
 	system-console --desktop_script=test_one.tcl
 
+qsys:
+	qsys-edit $(PROJECT).qsys &
+
 clean:
 	rm -rf incremental_db
 	rm -rf db
