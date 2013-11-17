@@ -34,14 +34,6 @@ if {$jtag_masters=={}} then {
     puts "masters found: $jtag_masters"
 }
 
-puts ""
-set sys_id [master_read_32 $jtag_master $sysid_base 1]
-set sys_ts [master_read_32 $jtag_master $sys_timestamp 1]
-set sys_ts_human_readable [clock format $sys_ts]
-puts "sys_id:        $sys_id"
-puts "sys_timestamp: $sys_ts_human_readable"
-#puts $sys_ts_human_readable
-
 # load design
 set work [pwd]
 puts ""
@@ -50,12 +42,20 @@ puts "loading design ..."
 design_load $work
 puts "done"
 
-puts "start test ..."
-set jtag_master [lindex [get_service_paths master] 0]
-
 #opens the service master (needed for system console)
-
+set jtag_master [lindex [get_service_paths master] 0]
 open_service master $jtag_master
+
+puts ""
+set sys_id [master_read_32 $jtag_master $sysid_base 1]
+set sys_ts [master_read_32 $jtag_master $sys_timestamp 1]
+set sys_ts_human_readable [clock format $sys_ts]
+puts "sys_id:        $sys_id"
+puts "sys_timestamp: $sys_ts_human_readable"
+puts ""
+
+puts "start test ..."
+
 
 #sets up loop value
 set loopcount 0x00
