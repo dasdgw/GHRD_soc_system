@@ -33,7 +33,7 @@ clean:
 	rm -rf incremental_db
 	rm -rf db
 	rm -rf greybox_tmp
-	rm -rf build/*
+	rm -rf $(BUILD_PATH)/*
 
 clean_qsys_system:
 	rm -rf soc_system/*
