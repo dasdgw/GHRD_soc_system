@@ -11,6 +11,9 @@
 # The System Console test Message will show that the test is done, but the push buttons can be still pushed to change the LEDs
 # as long as the board is not reprogrammed 
 
+set sysid_base    0x10000
+set sys_timestamp 0x10004
+
 # Set the values to write to the LED pio.
 #
 set led_vals {0 1 2 4 8 16 32 64 128 64 32 16 8 4 2 5}
@@ -30,6 +33,14 @@ if {$jtag_masters=={}} then {
 } else {
     puts "masters found: $jtag_masters"
 }
+
+puts ""
+set sys_id [master_read_32 $jtag_master $sysid_base 1]
+set sys_ts [master_read_32 $jtag_master $sys_timestamp 1]
+set sys_ts_human_readable [clock format $sys_ts]
+puts "sys_id:        $sys_id"
+puts "sys_timestamp: $sys_ts_human_readable"
+#puts $sys_ts_human_readable
 
 # load design
 set work [pwd]
@@ -119,6 +130,6 @@ send_message info "System Console test done"
 
 #closes service master (needed for system console)
 
-close_service master $jtag_master
+#close_service master $jtag_master
 puts "test done."
 
