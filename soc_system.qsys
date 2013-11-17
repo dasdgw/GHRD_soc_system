@@ -152,6 +152,22 @@
          type = "int";
       }
    }
+   element onchip_memory2_0.s1
+   {
+      datum baseAddress
+      {
+         value = "0";
+         type = "String";
+      }
+   }
+   element button_pio.s1
+   {
+      datum _lockedAddress
+      {
+         value = "1";
+         type = "boolean";
+      }
+   }
    element led_pio.s1
    {
       datum _lockedAddress
@@ -171,22 +187,6 @@
       {
          value = "65664";
          type = "String";
-      }
-   }
-   element onchip_memory2_0.s1
-   {
-      datum baseAddress
-      {
-         value = "0";
-         type = "String";
-      }
-   }
-   element button_pio.s1
-   {
-      datum _lockedAddress
-      {
-         value = "1";
-         type = "boolean";
       }
    }
    element sysid_qsys
@@ -246,7 +246,7 @@
   <parameter name="resetSynchronousEdges" value="NONE" />
  </module>
  <module kind="altera_hps" version="13.1" enabled="1" name="hps_0">
-  <parameter name="MEM_VENDOR" value="JEDEC" />
+  <parameter name="MEM_VENDOR" value="Micron" />
   <parameter name="MEM_FORMAT" value="DISCRETE" />
   <parameter name="RDIMM_CONFIG" value="0000000000000000" />
   <parameter name="LRDIMM_EXTENDED_CONFIG">0x000000000000000000</parameter>
@@ -523,7 +523,7 @@
   <parameter name="TIMING_BOARD_AC_SKEW" value="0.03" />
   <parameter name="TIMING_BOARD_AC_TO_CK_SKEW" value="0.0" />
   <parameter name="RATE" value="Full" />
-  <parameter name="MEM_CLK_FREQ" value="300.0" />
+  <parameter name="MEM_CLK_FREQ" value="400.0" />
   <parameter name="USE_MEM_CLK_FREQ" value="false" />
   <parameter name="FORCE_DQS_TRACKING" value="AUTO" />
   <parameter name="FORCE_SHADOW_REGS" value="AUTO" />
@@ -565,8 +565,8 @@
   <parameter name="BSEL" value="1" />
   <parameter name="CSEL_EN" value="false" />
   <parameter name="CSEL" value="0" />
-  <parameter name="F2S_Width" value="1" />
-  <parameter name="S2F_Width" value="1" />
+  <parameter name="F2S_Width" value="2" />
+  <parameter name="S2F_Width" value="2" />
   <parameter name="LWH2F_Enable" value="true" />
   <parameter name="F2SDRAM_Type" value="" />
   <parameter name="F2SDRAM_Width" value="" />
