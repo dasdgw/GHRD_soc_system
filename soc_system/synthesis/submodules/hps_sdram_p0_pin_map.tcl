@@ -303,8 +303,10 @@ proc hps_sdram_p0_get_core_full_instance_list {corename} {
 
 	if {[ llength $instance_list ] == 0} {
 		post_message -type error "The auto-constraining script was not able to detect any instance for core < $corename >"
-		post_message -type error "Make sure the core < $corename > is instantiated within another component (wrapper)"
-		post_message -type error "and it's not the top-level for your project"
+		post_message -type error "Verify the following:"
+      post_message -type error " The core < $corename > is instantiated within another component (wrapper)"
+		post_message -type error " The core is not the top-level of the project"
+		post_message -type error " The memory interface pins are exported to the top-level of the project"
 	}
 
 	return $instance_list
@@ -1865,6 +1867,30 @@ proc hps_sdram_p0_get_dqs_phase { dqs_pins } {
 	return $dqs_phase
 }
 
+proc hps_sdram_p0_get_dqs_period { dqs_pins } {
+	set dqs_period -100
+	set dqs0 [lindex $dqs_pins 0]
+	if {$dqs0 != ""} {
+		set dll_id [hps_sdram_p0_traverse_to_dll_id $dqs0 msg_list]
+		if {$dll_id != -1} {
+			set dqs_period_str [get_atom_node_info -key TIME_INPUT_FREQUENCY -node $dll_id]
+			if {[regexp {(.*) ps} $dqs_period_str matched dqs_period_ps] == 1} {
+				set dqs_period [expr $dqs_period_ps/1000.0]
+			} elseif {[regexp {(.*) ps} $dqs_period_str matched dqs_period_ns] == 1} {
+				set dqs_period $dqs_period_ns
+			}
+			
+		}
+	}
+
+	if {$dqs_period < 0} {
+		set dqs_period 0
+		post_message -type critical_warning "Unable to determine DQS delay chain period.  Assuming default setting of $dqs_period"
+	}
+
+	return $dqs_period
+}
+
 proc hps_sdram_p0_get_operating_conditions_number {} {
 	set cur_operating_condition [get_operating_conditions]
 	set counter 0
@@ -2040,7 +2066,7 @@ proc hps_sdram_p0_get_ddr_pins { instname allpins } {
 	set pins(ac_wo_reset_pins) [ concat $pins(add_pins) $pins(ba_pins) $pins(cmd_pins)]
 
 	set pins(afi_ck_pins) ${instname}|p0|umemphy|afi_clk_reg
-	set pins(dqs_enable_regs_pins) ${instname}|p0|umemphy|uio_pads|dq_ddio[0].ubidir_dq_dqs|altdq_dqs2_inst|dqs_enable_ctrl~DQSENABLEOUT_DFF
+	set pins(dqs_enable_regs_pins) ${instname}|p0|umemphy|uio_pads|dq_ddio[*].ubidir_dq_dqs|altdq_dqs2_inst|dqs_enable_ctrl~DQSENABLEOUT_DFF
 	set inst_driver ""
 	set pins(driver_core_ck_pins) ""
 	if {[regexp -nocase {if[0-9]$} $instname] == 1} {

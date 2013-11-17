@@ -89,6 +89,7 @@ parameter INPUT_FREQ_PS = "0 ps";
 parameter DELAY_CHAIN_BUFFER_MODE = "high";
 parameter DQS_PHASE_SETTING = 3;
 parameter DQS_PHASE_SHIFT = 9000;
+localparam DQS_DELAYCHAIN_BYPASS = (DQS_PHASE_SHIFT == 0) ? "true" : "false";
 parameter DQS_ENABLE_PHASE_SETTING = 2;
 parameter USE_DYNAMIC_CONFIG = "true";
 parameter INVERT_CAPTURE_STROBE = "false";
@@ -194,7 +195,7 @@ output [EXTRA_OUTPUT_WIDTH-1:0] extra_write_data_out;
 
 output capture_strobe_tracking;
 
-parameter LFIFO_OCT_EN_MASK = 32'hFFFFFFFF;
+parameter LFIFO_OCT_EN_MASK = 4294967295;
 input [(rate_mult_out / 2)-1:0] lfifo_rdata_en;
 input [(rate_mult_out / 2)-1:0] lfifo_rdata_en_full;
 localparam LFIFO_RD_LATENCY_WIDTH = 5;
@@ -1018,7 +1019,8 @@ begin
 		cyclonev_dqs_delay_chain
 		#(
 			.dqs_period(INPUT_FREQ_PS),
-			.dqs_phase_shift(DQS_PHASE_SHIFT)
+			.dqs_phase_shift(DQS_PHASE_SHIFT),
+			.dqs_delay_chain_bypass(DQS_DELAYCHAIN_BYPASS)
 		)
 		dqs_delay_chain (
 			.dqsin (dqsin),
@@ -1038,7 +1040,8 @@ begin
 			cyclonev_dqs_delay_chain
 			#(
 				.dqs_period(INPUT_FREQ_PS),
-				.dqs_phase_shift(DQS_PHASE_SHIFT)
+				.dqs_phase_shift(DQS_PHASE_SHIFT),
+				.dqs_delay_chain_bypass(DQS_DELAYCHAIN_BYPASS)
 			) dqs_delay_chain (
 				.dqsin (dqsin),
 				.delayctrlin (dll_delay_value),
@@ -1055,7 +1058,8 @@ begin
 			cyclonev_dqs_delay_chain
 			#(
 				.dqs_period(INPUT_FREQ_PS),
-				.dqs_phase_shift(DQS_PHASE_SHIFT)
+				.dqs_phase_shift(DQS_PHASE_SHIFT),
+				.dqs_delay_chain_bypass(DQS_DELAYCHAIN_BYPASS)
 			) dqs_delay_chain (
 				.dqsin (dqsin),
 				.delayctrlin (dll_delay_value),
@@ -1163,7 +1167,8 @@ begin
 			cyclonev_dqs_delay_chain
 			#(
 				.dqs_period(INPUT_FREQ_PS),
-				.dqs_phase_shift(DQS_PHASE_SHIFT)
+				.dqs_phase_shift(DQS_PHASE_SHIFT),
+				.dqs_delay_chain_bypass(DQS_DELAYCHAIN_BYPASS)
 			) dqs_n_delay_chain (
 				.dqsin (dqsnin),
 				.delayctrlin (dll_delay_value),
@@ -1178,7 +1183,8 @@ begin
 			cyclonev_dqs_delay_chain
 			#(
 				.dqs_period(INPUT_FREQ_PS),
-				.dqs_phase_shift(DQS_PHASE_SHIFT)
+				.dqs_phase_shift(DQS_PHASE_SHIFT),
+				.dqs_delay_chain_bypass(DQS_DELAYCHAIN_BYPASS)
 			) dqs_n_delay_chain (
 				.dqsin (dqsnin),
 				.delayctrlin (dll_delay_value),
@@ -1298,8 +1304,8 @@ begin
 			end
 			else
 			begin
-				assign clk_gate_hi = output_strobe_ena[0];
-				assign clk_gate_lo = output_strobe_ena[0];
+				assign clk_gate_hi = 1'b1;
+				assign clk_gate_lo = 1'b1;
 			end 
 			cyclonev_ddio_out
 			#(

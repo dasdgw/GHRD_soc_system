@@ -673,8 +673,6 @@ void tclrpt_loop(void)
 					break;
 				case TCLDBG_RUN_MEM_CALIBRATE :
 					// Run the full memory calibration
-					// Set the PHY to be in debug mode
-					gbl->phy_debug_mode_flags |= PHY_DEBUG_IN_DEBUG_MODE;
 					run_mem_calibrate();
 					tclrpt_mark_interface_as_response_ready();
 					break;

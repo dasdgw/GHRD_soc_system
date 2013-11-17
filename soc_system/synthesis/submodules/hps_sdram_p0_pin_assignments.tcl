@@ -123,7 +123,7 @@ if { ![info exists quartus(nameofexecutable)] || ($quartus(nameofexecutable) != 
 		return 1
 	}
 
-	catch { exec $cmd -t [ info script ] $project_name } output
+	set output [ exec $cmd -t [ info script ] $project_name ]
 
 	foreach line [split $output \n] {
 		set type info
@@ -224,6 +224,7 @@ foreach inst $instances {
     foreach ck_pin [ concat $pins(ck_pins) $pins(ckn_pins) ] {
       set_instance_assignment -name IO_STANDARD "DIFFERENTIAL $::GLOBAL_hps_sdram_p0_io_standard_differential" -to $ck_pin -tag __$::GLOBAL_hps_sdram_p0_corename
       set_instance_assignment -name OUTPUT_TERMINATION "SERIES 40 OHM WITHOUT CALIBRATION" -to $ck_pin -tag __$::GLOBAL_hps_sdram_p0_corename
+	  set_instance_assignment -name D5_DELAY 2 -to $ck_pin -tag __$::GLOBAL_hps_sdram_p0_corename
     }
 
     foreach ac_pin $pins(ac_wo_reset_pins) {
@@ -237,7 +238,7 @@ foreach inst $instances {
       set_instance_assignment -name BOARD_MODEL_NEAR_PULLUP_R OPEN -to $reset_pin -tag __$::GLOBAL_hps_sdram_p0_corename
       set_instance_assignment -name BOARD_MODEL_FAR_PULLDOWN_R OPEN -to $reset_pin -tag __$::GLOBAL_hps_sdram_p0_corename
       set_instance_assignment -name BOARD_MODEL_NEAR_PULLDOWN_R OPEN -to $reset_pin -tag __$::GLOBAL_hps_sdram_p0_corename
-      set_instance_assignment -name OUTPUT_TERMINATION "SERIES 40 OHM WITH CALIBRATION" -to $reset_pin -tag __$::GLOBAL_hps_sdram_p0_corename
+      set_instance_assignment -name OUTPUT_TERMINATION "SERIES 40 OHM WITHOUT CALIBRATION" -to $reset_pin -tag __$::GLOBAL_hps_sdram_p0_corename
     } 
 
     foreach dm_pin $pins(dm_pins) {
@@ -262,6 +263,7 @@ foreach inst $instances {
     foreach ck_pin [ concat $pins(ck_pins) $pins(ckn_pins) ] {
       set_instance_assignment -name IO_STANDARD "DIFFERENTIAL $::GLOBAL_hps_sdram_p0_io_standard_differential CLASS I" -to $ck_pin -tag __$::GLOBAL_hps_sdram_p0_corename
       set_instance_assignment -name OUTPUT_TERMINATION "SERIES 50 OHM WITHOUT CALIBRATION" -to $ck_pin -tag __$::GLOBAL_hps_sdram_p0_corename
+      set_instance_assignment -name D5_DELAY 2 -to $ck_pin -tag __$::GLOBAL_hps_sdram_p0_corename
     }
 
     foreach ac_pin $pins(ac_wo_reset_pins) {
@@ -336,6 +338,7 @@ if { [ llength $quartus(args) ] > 1 } {
 	}
 }
 
+set_global_assignment -name USE_DLL_FREQUENCY_FOR_DQS_DELAY_CHAIN ON
 set_global_assignment -name UNIPHY_SEQUENCER_DQS_CONFIG_ENABLE ON
 set_global_assignment -name OPTIMIZE_MULTI_CORNER_TIMING ON
 

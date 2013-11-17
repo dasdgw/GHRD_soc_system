@@ -11,9 +11,9 @@
 // agreement for further details.
 
 
-// $Id: //acds/rel/13.0/ip/merlin/altera_merlin_axi_master_ni/altera_merlin_axi_master_ni.sv#1 $
+// $Id: //acds/rel/13.1/ip/merlin/altera_merlin_axi_master_ni/altera_merlin_axi_master_ni.sv#1 $
 // $Revision: #1 $
-// $Date: 2013/02/11 $    
+// $Date: 2013/08/11 $    
 // $Author: swbranch $
 
 //-----------------------------------------
@@ -84,7 +84,9 @@ module altera_merlin_axi_master_ni
             PKT_SRC_ID_L = 1,
             PKT_DEST_ID_H = 0,
             PKT_DEST_ID_L = 0,
-            ST_DATA_W = 125,
+			PKT_ORI_BURST_SIZE_H = 127,
+			PKT_ORI_BURST_SIZE_L = 125,
+            ST_DATA_W = 128,
             ST_CHANNEL_W = 1,
                            
     //----------------
@@ -587,7 +589,8 @@ always_comb
         write_cp_data[PKT_THREAD_ID_H :PKT_THREAD_ID_L]     = awid;
         write_cp_data[PKT_CACHE_H :PKT_CACHE_L]             = awcache;
         write_cp_data[PKT_ADDR_SIDEBAND_H:PKT_ADDR_SIDEBAND_L] = awuser;
-
+		write_cp_data[PKT_ORI_BURST_SIZE_H :PKT_ORI_BURST_SIZE_L] = awsize;
+		
         //  AXI4 signals: receive from the translator
         if (AXI_VERSION == "AXI4") begin
             write_cp_data[PKT_QOS_H : PKT_QOS_L]                     = awqos;
@@ -624,6 +627,7 @@ always_comb
         read_cp_data[PKT_BYTEEN_H   :PKT_BYTEEN_L   ]       = {PKT_BYTEEN_W{1'b1}};
         read_cp_data[PKT_SRC_ID_H   :PKT_SRC_ID_L   ]       = id_int[PKT_SRC_ID_W-1:0];
         read_cp_data[PKT_BURST_SIZE_H :PKT_BURST_SIZE_L]    = arsize;
+		read_cp_data[PKT_ORI_BURST_SIZE_H :PKT_ORI_BURST_SIZE_L] = arsize;
         read_cp_data[PKT_BURST_TYPE_H :PKT_BURST_TYPE_L]    = arburst;
         read_cp_data[PKT_PROTECTION_H : PKT_PROTECTION_L]   = arprot;
         read_cp_data[PKT_THREAD_ID_H  : PKT_THREAD_ID_L]    = arid;

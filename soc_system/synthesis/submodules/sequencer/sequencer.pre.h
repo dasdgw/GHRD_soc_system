@@ -68,6 +68,30 @@ extern void err_report_internal_error (const char* description, const char* modu
 #define RW_MGR_DI_BASE (BASE_RW_MGR + 0x0010)
 #endif
 
+#if DDR3
+#define DDR3_MR1_ODT_MASK  0xFFFFFD99
+#define DDR3_MR2_ODT_MASK  0xFFFFF9FF
+#define DDR3_AC_MIRR_MASK  0x020A8
+
+#if LRDIMM
+// USER RTT_NOM: bits {4,3,2} of the SPD = bits {9,6,2} of the MR
+#define LRDIMM_SPD_MR_RTT_NOM(spd_byte)                                   \
+           (   (((spd_byte) & (1 << 4)) << (9-4))                         \
+             | (((spd_byte) & (1 << 3)) << (6-3))                         \
+             | (((spd_byte) & (1 << 2)) << (2-2)))
+
+// USER RTT_DRV: bits {1,0} of the SPD = bits {5,1} of the MR
+#define LRDIMM_SPD_MR_RTT_DRV(spd_byte)                                   \
+           (   (((spd_byte) & (1 << 1)) << (5-1))                         \
+             | (((spd_byte) & (1 << 0)) << (1-0)))
+
+// USER RTT_WR: bits {7,6} of the SPD = bits {10,9} of the MR
+#define LRDIMM_SPD_MR_RTT_WR(spd_byte)                                    \
+               (((spd_byte) & (3 << 6)) << (9-6))
+
+#endif // LRDIMM
+#endif // DDR3
+
 #define RW_MGR_LOAD_CNTR_0 BASE_RW_MGR + 0x0800
 #define RW_MGR_LOAD_CNTR_1 BASE_RW_MGR + 0x0804
 #define RW_MGR_LOAD_CNTR_2 BASE_RW_MGR + 0x0808
@@ -184,6 +208,7 @@ extern void err_report_internal_error (const char* description, const char* modu
 #define REG_FILE_TRK_RW_MGR_ADDR        (BASE_REG_FILE + 0x002C)
 #define REG_FILE_TRK_READ_DQS_WIDTH     (BASE_REG_FILE + 0x0030)
 #define REG_FILE_TRK_RFSH               (BASE_REG_FILE + 0x0034)
+#define CTRL_CONFIG_REG			(BASE_MMR      + 0x0000)
 #else
 /* Tracking slave addresses. */
 #define TRK_DTAPS_PER_PTAP     (BASE_TRK_MGR + 0x0000)
@@ -220,7 +245,8 @@ extern void err_report_internal_error (const char* description, const char* modu
 #endif
 #define PHY_MGR_AFI_RLAT				(BASE_PHY_MGR + 0x401c)
 
-#define PHY_MGR_CAL_SUCCESS				(1)
+#define PHY_MGR_CAL_RESET				(0)
+#define PHY_MGR_CAL_SUCCESS			(1)
 #define PHY_MGR_CAL_FAIL				(2)
 
 /* PHY manager command addresses. */

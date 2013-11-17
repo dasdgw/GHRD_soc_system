@@ -110,12 +110,12 @@ set t(wru_output_max_delay_internal) [expr $t(WL_DCD) + $t(WL_JITTER)*$t(WL_JITT
 set data_output_max_delay [ hps_sdram_p0_round_3dp [ expr $t(wru_output_max_delay_external) + $t(wru_output_max_delay_internal)]]
 
 # Maximum delay on data input pins
-set t(rdu_input_max_delay_external) [expr $t(DQSQ) + $board(intra_DQS_group_skew) + $board(DQ_DQS_skew)]
+set t(rdu_input_max_delay_external) [expr $t(DQSQ) + $board(intra_DQS_group_skew) + $board(DQ_DQS_skew) + $ISI(READ_DQ)/2 + $ISI(READ_DQS)/2]
 set t(rdu_input_max_delay_internal) [expr $DQSpathjitter*$DQSpathjitter_setup_prop + $SSN(rel_pushout_i)]
 set data_input_max_delay [ hps_sdram_p0_round_3dp [ expr $t(rdu_input_max_delay_external) + $t(rdu_input_max_delay_internal) ]]
 
 # Minimum delay on data input pins
-set t(rdu_input_min_delay_external) [expr $board(intra_DQS_group_skew) - $board(DQ_DQS_skew)]
+set t(rdu_input_min_delay_external) [expr $board(intra_DQS_group_skew) - $board(DQ_DQS_skew) + $ISI(READ_DQ)/2 + $ISI(READ_DQS)/2]
 set t(rdu_input_min_delay_internal) [expr $t(DCD) + $DQSpathjitter*(1.0-$DQSpathjitter_setup_prop) + $SSN(rel_pullin_i)]
 set data_input_min_delay [ hps_sdram_p0_round_3dp [ expr - $t(rdu_input_min_delay_external) - $t(rdu_input_min_delay_internal) ]]
 
@@ -495,6 +495,7 @@ foreach { inst } $instances {
 
 
 
+	set read_fifo_read_dff ${prefix}|*p0|*altdq_dqs2_inst|*read_fifo~OUTPUT_DFF_*
 	set read_fifo_write_address_dff ${prefix}|*p0|*altdq_dqs2_inst|*read_fifo~WRITE_ADDRESS_DFF
 	set read_fifo_read_address_dff ${prefix}|*p0|*altdq_dqs2_inst|*read_fifo~READ_ADDRESS_DFF
 	set lfifo_in_read_en_dff ${prefix}|*p0|*lfifo~LFIFO_IN_READ_EN_DFF
@@ -547,6 +548,7 @@ foreach { inst } $instances {
 		set_false_path -from ${prefix}|*s0|* -to [get_clocks $local_pll_write_clk]
 		set_false_path -from [get_clocks $local_pll_write_clk] -to ${prefix}|*s0|*hphy_bridge_s0_translator|av_readdata_pre[*]
 
+		set_false_path -from $read_fifo_read_dff -to $hphy_ff
 
 	}
 
@@ -609,8 +611,7 @@ foreach { inst } $instances {
 	# -                            - #
 	# ------------------------------ #
 	if {$fit_flow} {
-		set_min_delay -from {altera_reserved_tck} -to {altera_reserved_tck} 0.500
-
+	
 
 
 	}

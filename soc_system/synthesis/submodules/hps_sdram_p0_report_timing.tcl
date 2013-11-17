@@ -75,7 +75,7 @@ set script_dir [file dirname [info script]]
 # to process variation 
 
 set MP(DQSQ) 0.65
-set MP(QH_time) 0.5
+set MP(QH_time) 0.55
 set MP(IS) 0.70
 set MP(IH) 0.6
 set MP(DS) 0.60
@@ -340,7 +340,6 @@ foreach inst $instances {
 		# Read Analysis
 
 		hps_sdram_p0_perform_flexible_read_capture_timing_analysis $opcs $opcname $inst $family scale_factors $io_std $interface_type $max_package_skew $dqs_phase $period $all_dq_pins pins t summary MP IP board fpga
-		hps_sdram_p0_perform_resync_timing_analysis $opcs $opcname $inst ${::GLOBAL_hps_sdram_p0_corename} $family scale_factors $io_std $interface_type $period pins t summary MP IP board fpga SSN
 
 		#######################################
 		# PHY and Address/command Analyses
@@ -458,7 +457,7 @@ foreach inst $instances {
 	
 	write_timing_report
 
-	post_message -type critical_warning "Timing analysis was performed on core ${::GLOBAL_hps_sdram_p0_corename} using Quartus II v13.0 with a preliminary timing model and constraints. You must regenerate this IP in a future version of Quartus II to update the timing constraints to match the timing model."
+	post_message -type critical_warning "Timing analysis was performed on core ${::GLOBAL_hps_sdram_p0_corename} using Quartus II v13.1 with a preliminary timing model and constraints. You must regenerate this IP in a future version of Quartus II to update the timing constraints to match the timing model."
 	incr inst_id
 }
 

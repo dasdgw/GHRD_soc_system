@@ -527,7 +527,6 @@ endgenerate
 assign phy_clk = seq_clk;
 assign phy_reset_n = reset_n_seq_clk;  
 
-
 assign dll_clk = pll_write_clk_pre_phy_clk;
 
 assign dll_pll_locked = pll_locked;
@@ -676,6 +675,7 @@ assign afi_reset_n = reset_n_afi_clk;
 	);
 	defparam hphy_inst.hphy_ac_ddr_disable = "true";  
 	defparam hphy_inst.hphy_datapath_delay = "one_cycle";
+	defparam hphy_inst.hphy_datapath_ac_delay = "one_and_half_cycles";
 	defparam hphy_inst.hphy_reset_delay_en = "false";  
 	defparam hphy_inst.m_hphy_ac_rom_init_file = AC_ROM_INIT_FILE_NAME;
 	defparam hphy_inst.m_hphy_inst_rom_init_file = INST_ROM_INIT_FILE_NAME;

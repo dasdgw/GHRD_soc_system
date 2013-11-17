@@ -14,7 +14,7 @@
 
 `timescale 1 ps / 1 ps
 
-(* altera_attribute = "-name IP_TOOL_NAME altera_mem_if_ddr3_hard_phy_core; -name IP_TOOL_VERSION 13.0; -name FITTER_ADJUST_HC_SHORT_PATH_GUARDBAND 100" *)
+(* altera_attribute = "-name IP_TOOL_NAME altera_mem_if_ddr3_hard_phy_core; -name IP_TOOL_VERSION 13.1; -name FITTER_ADJUST_HC_SHORT_PATH_GUARDBAND 100" *)
 module hps_sdram_p0 (
     global_reset_n,
     soft_reset_n,
@@ -181,6 +181,7 @@ parameter MEM_IF_ODT_WIDTH         	= 1;
 // DLL Interface
 parameter DLL_DELAY_CTRL_WIDTH	= 7;
 
+parameter SCC_DATA_WIDTH            = 1;
 	
 // Read Datapath parameters, the values should not be changed unless the intention is to change the architecture.
 // Read valid prediction FIFO
@@ -385,7 +386,7 @@ output  scc_clk;
 output  avl_reset_n;
 output  scc_reset_n;
 
-input                                 scc_data;
+input           [SCC_DATA_WIDTH-1:0]  scc_data;
 input    [MEM_IF_READ_DQS_WIDTH-1:0]  scc_dqs_ena;
 input    [MEM_IF_READ_DQS_WIDTH-1:0]  scc_dqs_io_ena;
 input          [MEM_IF_DQ_WIDTH-1:0]  scc_dq_ena;

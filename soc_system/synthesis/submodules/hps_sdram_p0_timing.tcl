@@ -133,6 +133,8 @@ set ISI(addresscmd_setup) 0.0
 set ISI(addresscmd_hold) 0.0
 set ISI(DQ) 0.0
 set ISI(DQS) 0.0
+set ISI(READ_DQ) 0.0
+set ISI(READ_DQS) 0.0
 
 # Board skews
 set board(abs_max_CK_delay) 0.03

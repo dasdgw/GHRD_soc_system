@@ -1,4 +1,16 @@
 <hps>
+  <system>
+    <config name='DEVICE_FAMILY' value='Cyclone V' />
+  </system>
+  <fpga_interfaces>
+    <config name='F2H_AXI_SLAVE' used='true' />
+    <config name='H2F_AXI_MASTER' used='true' />
+    <config name='LWH2F_AXI_MASTER' used='true' />
+    <config name='F2SDRAM_COMMAND_PORT_USED' value='0x0' />
+    <config name='F2SDRAM_READ_PORT_USED' value='0x0' />
+    <config name='F2SDRAM_WRITE_PORT_USED' value='0x0' />
+    <config name='F2SDRAM_RESET_PORT_USED' value='0x0' />
+  </fpga_interfaces>
   <peripherals>
     <peripheral name='rgmii0' used='false' />
     <peripheral name='rgmii1' used='true' />
@@ -36,6 +48,7 @@
     <peripheral name='i2c3' used='false' />
     <peripheral name='can0' used='false' />
     <peripheral name='can1' used='false' />
+    <peripheral name='trace' used='false' />
   </peripherals>
   <pin_muxes>
     <pin_mux name='MIXED1IO0' value='2' />

@@ -24,7 +24,8 @@ module altera_merlin_axi_slave_ni
     // -----------------------------------------------
     // Packet format parameters
     // -----------------------------------------------
-
+	parameter PKT_ORI_BURST_SIZE_H        = 120,
+	parameter PKT_ORI_BURST_SIZE_L 		  = 118,
     parameter PKT_QOS_H                   = 117,
     parameter PKT_QOS_L                   = 114,
     parameter PKT_THREAD_ID_H             = 113,
@@ -68,7 +69,7 @@ module altera_merlin_axi_slave_ni
     // -----------------------------------------------
     // Component parameters
     // -----------------------------------------------
-    parameter ST_DATA_W                   = 118,
+    parameter ST_DATA_W                   = 121,
     parameter ADDR_WIDTH                  = 32,
     parameter RDATA_WIDTH                 = 32,
     parameter WDATA_WIDTH                 = 32,
@@ -89,8 +90,8 @@ module altera_merlin_axi_slave_ni
     parameter NUMSYMBOLS                  = PKT_DATA_W / 8,
     //DATA_USER_WIDTH: w/ruser is not supported in AXI3. set it to default 1 and axi trasnlator will terminate this connection appropriately
     parameter DATA_USER_WIDTH             = 8,
-    parameter AXI_LOCK_WIDTH              = (AXI_VERSION == "AXI3") ? 2:1,
-    parameter AXI_BURST_LENGTH_WIDTH      = (AXI_VERSION == "AXI3") ? 4:8
+    parameter AXI_LOCK_WIDTH              = (AXI_VERSION == "AXI4") ? 1:2,
+    parameter AXI_BURST_LENGTH_WIDTH      = (AXI_VERSION == "AXI4") ? 8:4
 
 )
 (
@@ -435,8 +436,9 @@ module altera_merlin_axi_slave_ni
     always_comb
     begin
         write_rp_data = write_rsp_fifo_outdata[ST_DATA_W-1:0];
-        write_rp_data[PKT_DEST_ID_H:PKT_DEST_ID_L]       = write_rsp_fifo_outdata[PKT_SRC_ID_H:PKT_SRC_ID_L];
-        write_rp_data[PKT_SRC_ID_H:PKT_SRC_ID_L]         = write_rsp_fifo_outdata[PKT_DEST_ID_H:PKT_DEST_ID_L];
+        write_rp_data[PKT_DEST_ID_H:PKT_DEST_ID_L]       			= write_rsp_fifo_outdata[PKT_SRC_ID_H:PKT_SRC_ID_L];
+        write_rp_data[PKT_SRC_ID_H:PKT_SRC_ID_L]         			= write_rsp_fifo_outdata[PKT_DEST_ID_H:PKT_DEST_ID_L];
+		write_rp_data[PKT_ORI_BURST_SIZE_H:PKT_ORI_BURST_SIZE_L]	= write_rsp_fifo_outdata[PKT_ORI_BURST_SIZE_H:PKT_ORI_BURST_SIZE_L];
         if (PASS_ID_TO_SLAVE) begin
             { write_rp_data[PKT_DEST_ID_H:PKT_DEST_ID_L], write_rp_data[PKT_THREAD_ID_H:PKT_THREAD_ID_L] }  = bid;
         end
@@ -665,6 +667,7 @@ module altera_merlin_axi_slave_ni
             read_rp_data[PKT_BURST_SIZE_H:PKT_BURST_SIZE_L] = uncompressor_burstsize;
             read_rp_data[PKT_DEST_ID_H:PKT_DEST_ID_L]       = read_rsp_fifo_outdata[PKT_SRC_ID_H:PKT_SRC_ID_L];
             read_rp_data[PKT_SRC_ID_H:PKT_SRC_ID_L]         = read_rsp_fifo_outdata[PKT_DEST_ID_H:PKT_DEST_ID_L];
+			read_rp_data[PKT_ORI_BURST_SIZE_H:PKT_ORI_BURST_SIZE_L] = read_rsp_fifo_outdata[PKT_ORI_BURST_SIZE_H:PKT_ORI_BURST_SIZE_L];
             read_rp_data[PKT_RESPONSE_STATUS_H:PKT_RESPONSE_STATUS_L] = rresp;
 
             if (PASS_ID_TO_SLAVE) begin
