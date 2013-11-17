@@ -28,7 +28,7 @@
 // ------------------------------------------
 // Generation parameters:
 //   output_name:         soc_system_mm_interconnect_0_cmd_xbar_demux
-//   ST_DATA_W:           128
+//   ST_DATA_W:           165
 //   ST_CHANNEL_W:        7
 //   NUM_OUTPUTS:         1
 //   VALID_WIDTH:         1
@@ -46,7 +46,7 @@ module soc_system_mm_interconnect_0_cmd_xbar_demux
     // Sink
     // -------------------
     input  [1-1      : 0]   sink_valid,
-    input  [128-1    : 0]   sink_data, // ST_DATA_W=128
+    input  [165-1    : 0]   sink_data, // ST_DATA_W=165
     input  [7-1 : 0]   sink_channel, // ST_CHANNEL_W=7
     input                         sink_startofpacket,
     input                         sink_endofpacket,
@@ -56,7 +56,7 @@ module soc_system_mm_interconnect_0_cmd_xbar_demux
     // Sources 
     // -------------------
     output reg                      src0_valid,
-    output reg [128-1    : 0] src0_data, // ST_DATA_W=128
+    output reg [165-1    : 0] src0_data, // ST_DATA_W=165
     output reg [7-1 : 0] src0_channel, // ST_CHANNEL_W=7
     output reg                      src0_startofpacket,
     output reg                      src0_endofpacket,

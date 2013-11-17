@@ -29,8 +29,8 @@ module soc_system_hps_0_fpga_interfaces(
  ,output wire [1 - 1 : 0 ] f2h_AWREADY
  ,input wire [5 - 1 : 0 ] f2h_AWUSER
  ,input wire [8 - 1 : 0 ] f2h_WID
- ,input wire [32 - 1 : 0 ] f2h_WDATA
- ,input wire [4 - 1 : 0 ] f2h_WSTRB
+ ,input wire [64 - 1 : 0 ] f2h_WDATA
+ ,input wire [8 - 1 : 0 ] f2h_WSTRB
  ,input wire [1 - 1 : 0 ] f2h_WLAST
  ,input wire [1 - 1 : 0 ] f2h_WVALID
  ,output wire [1 - 1 : 0 ] f2h_WREADY
@@ -50,7 +50,7 @@ module soc_system_hps_0_fpga_interfaces(
  ,output wire [1 - 1 : 0 ] f2h_ARREADY
  ,input wire [5 - 1 : 0 ] f2h_ARUSER
  ,output wire [8 - 1 : 0 ] f2h_RID
- ,output wire [32 - 1 : 0 ] f2h_RDATA
+ ,output wire [64 - 1 : 0 ] f2h_RDATA
  ,output wire [2 - 1 : 0 ] f2h_RRESP
  ,output wire [1 - 1 : 0 ] f2h_RLAST
  ,output wire [1 - 1 : 0 ] f2h_RVALID
@@ -108,8 +108,8 @@ module soc_system_hps_0_fpga_interfaces(
  ,output wire [1 - 1 : 0 ] h2f_AWVALID
  ,input wire [1 - 1 : 0 ] h2f_AWREADY
  ,output wire [12 - 1 : 0 ] h2f_WID
- ,output wire [32 - 1 : 0 ] h2f_WDATA
- ,output wire [4 - 1 : 0 ] h2f_WSTRB
+ ,output wire [64 - 1 : 0 ] h2f_WDATA
+ ,output wire [8 - 1 : 0 ] h2f_WSTRB
  ,output wire [1 - 1 : 0 ] h2f_WLAST
  ,output wire [1 - 1 : 0 ] h2f_WVALID
  ,input wire [1 - 1 : 0 ] h2f_WREADY
@@ -128,7 +128,7 @@ module soc_system_hps_0_fpga_interfaces(
  ,output wire [1 - 1 : 0 ] h2f_ARVALID
  ,input wire [1 - 1 : 0 ] h2f_ARREADY
  ,input wire [12 - 1 : 0 ] h2f_RID
- ,input wire [32 - 1 : 0 ] h2f_RDATA
+ ,input wire [64 - 1 : 0 ] h2f_RDATA
  ,input wire [2 - 1 : 0 ] h2f_RRESP
  ,input wire [1 - 1 : 0 ] h2f_RLAST
  ,input wire [1 - 1 : 0 ] h2f_RVALID
@@ -200,7 +200,7 @@ cyclonev_hps_interface_boot_from_fpga boot_from_fpga(
 
 cyclonev_hps_interface_fpga2hps fpga2hps(
  .port_size_config({
-    2'b00 // 1:0
+    2'b01 // 1:0
   })
 ,.arsize({
     f2h_ARSIZE[2:0] // 2:0
@@ -248,7 +248,7 @@ cyclonev_hps_interface_fpga2hps fpga2hps(
     f2h_AWVALID[0:0] // 0:0
   })
 ,.wdata({
-    f2h_WDATA[31:0] // 31:0
+    f2h_WDATA[63:0] // 63:0
   })
 ,.aruser({
     f2h_ARUSER[4:0] // 4:0
@@ -284,7 +284,7 @@ cyclonev_hps_interface_fpga2hps fpga2hps(
     f2h_AWID[7:0] // 7:0
   })
 ,.rdata({
-    f2h_RDATA[31:0] // 31:0
+    f2h_RDATA[63:0] // 63:0
   })
 ,.awready({
     f2h_AWREADY[0:0] // 0:0
@@ -317,7 +317,7 @@ cyclonev_hps_interface_fpga2hps fpga2hps(
     f2h_RREADY[0:0] // 0:0
   })
 ,.wstrb({
-    f2h_WSTRB[3:0] // 3:0
+    f2h_WSTRB[7:0] // 7:0
   })
 );
 
@@ -439,7 +439,7 @@ cyclonev_hps_interface_hps2fpga_light_weight hps2fpga_light_weight(
 
 cyclonev_hps_interface_hps2fpga hps2fpga(
  .port_size_config({
-    2'b00 // 1:0
+    2'b01 // 1:0
   })
 ,.arsize({
     h2f_ARSIZE[2:0] // 2:0
@@ -484,7 +484,7 @@ cyclonev_hps_interface_hps2fpga hps2fpga(
     h2f_AWVALID[0:0] // 0:0
   })
 ,.wdata({
-    h2f_WDATA[31:0] // 31:0
+    h2f_WDATA[63:0] // 63:0
   })
 ,.rid({
     h2f_RID[11:0] // 11:0
@@ -517,7 +517,7 @@ cyclonev_hps_interface_hps2fpga hps2fpga(
     h2f_AWID[11:0] // 11:0
   })
 ,.rdata({
-    h2f_RDATA[31:0] // 31:0
+    h2f_RDATA[63:0] // 63:0
   })
 ,.awready({
     h2f_AWREADY[0:0] // 0:0
@@ -550,7 +550,7 @@ cyclonev_hps_interface_hps2fpga hps2fpga(
     h2f_RREADY[0:0] // 0:0
   })
 ,.wstrb({
-    h2f_WSTRB[3:0] // 3:0
+    h2f_WSTRB[7:0] // 7:0
   })
 );
 

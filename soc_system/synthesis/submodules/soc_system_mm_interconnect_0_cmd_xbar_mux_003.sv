@@ -31,7 +31,7 @@
 //   ARBITRATION_SCHEME   "round-robin"
 //   PIPELINE_ARB:        1
 //   PKT_TRANS_LOCK:      72 (arbitration locking enabled)
-//   ST_DATA_W:           128
+//   ST_DATA_W:           129
 //   ST_CHANNEL_W:        7
 // ------------------------------------------
 
@@ -41,7 +41,7 @@ module soc_system_mm_interconnect_0_cmd_xbar_mux_003
     // Sinks
     // ----------------------
     input                       sink0_valid,
-    input [128-1   : 0]  sink0_data,
+    input [129-1   : 0]  sink0_data,
     input [7-1: 0]  sink0_channel,
     input                       sink0_startofpacket,
     input                       sink0_endofpacket,
@@ -52,7 +52,7 @@ module soc_system_mm_interconnect_0_cmd_xbar_mux_003
     // Source
     // ----------------------
     output                      src_valid,
-    output [128-1    : 0] src_data,
+    output [129-1    : 0] src_data,
     output [7-1 : 0] src_channel,
     output                      src_startofpacket,
     output                      src_endofpacket,
@@ -64,11 +64,11 @@ module soc_system_mm_interconnect_0_cmd_xbar_mux_003
     input clk,
     input reset
 );
-    localparam PAYLOAD_W        = 128 + 7 + 2;
+    localparam PAYLOAD_W        = 129 + 7 + 2;
     localparam NUM_INPUTS       = 1;
     localparam SHARE_COUNTER_W  = 1;
     localparam PIPELINE_ARB     = 1;
-    localparam ST_DATA_W        = 128;
+    localparam ST_DATA_W        = 129;
     localparam ST_CHANNEL_W     = 7;
     localparam PKT_TRANS_LOCK   = 72;
 
