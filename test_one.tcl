@@ -11,6 +11,11 @@
 # The System Console test Message will show that the test is done, but the push buttons can be still pushed to change the LEDs
 # as long as the board is not reprogrammed 
 
+set work [pwd]
+puts "working dir: $work"
+puts "loading design ..."
+design_load $work
+puts "done"
 
 # Set the values to write to the LED pio.
 #
