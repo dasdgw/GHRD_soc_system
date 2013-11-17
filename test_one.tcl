@@ -35,7 +35,7 @@ set loopcount 0x00
 
 while {$loopcount < 10} {
 	foreach val $led_vals {
-	master_write_8 $jtag_master 0x1_0040 $val
+	master_write_8 $jtag_master 0x10040 $val
 	# send_message info $loopcount 
 	incr loopcount
 	}
@@ -56,7 +56,7 @@ while {$loopcount1 < 100} {
 
 	# set the value to read from PIO starting from the base address and going up by 2 bytes
 
-	set CurSwitchs  [master_read_8 $jtag_master 0x1_00c0 0x2]  
+	set CurSwitchs  [master_read_8 $jtag_master 0x100c0 0x2]  
 	send_message info $CurSwitchs
  
 	# set the setting of CurSwitch to be the first value in the index (eg 0 in the lindex) 
@@ -68,7 +68,7 @@ while {$loopcount1 < 100} {
  
 	if { $lastSwitch == $CurSwitch} {
 		# master_write_8 $jtag_master 0x1_0040 7
-		 master_write_8 $jtag_master 0x1_0040 $CurSwitch  
+		 master_write_8 $jtag_master 0x10040 $CurSwitch  
 		# 7 in binary is 0111
 		# send_message info "write the value of 7 (in binary)"
 		# send_message info "=CurSwitch" 
@@ -77,7 +77,7 @@ while {$loopcount1 < 100} {
 	}
 	if { $lastSwitch != $CurSwitch} {
 		# master_write_8 $jtag_master 0x1_0040 8
-		 master_write_8 $jtag_master 0x1_0040 $CurSwitch  
+		 master_write_8 $jtag_master 0x10040 $CurSwitch  
 		# send_message info "write the value of 1 (in binary) "	
 		# send_message info "lastSwitch" 
 		# send_message info $lastSwitch  
@@ -92,7 +92,7 @@ while {$loopcount1 < 100} {
 
 #read the 2 byte at 0x1_00c0
 
-master_read_memory $jtag_master 0x1_00c0 2
+master_read_memory $jtag_master 0x100c0 2
 
 #print out a message that the test is done
 send_message info "System Console test done"
