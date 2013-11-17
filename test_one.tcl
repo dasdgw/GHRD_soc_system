@@ -11,12 +11,6 @@
 # The System Console test Message will show that the test is done, but the push buttons can be still pushed to change the LEDs
 # as long as the board is not reprogrammed 
 
-set work [pwd]
-puts "working dir: $work"
-puts "loading design ..."
-design_load $work
-puts "done"
-
 # Set the values to write to the LED pio.
 #
 set led_vals {0 1 2 4 8 16 32 64 128 64 32 16 8 4 2 5}
@@ -25,6 +19,27 @@ set AvailableServices [get_service_types]
 
 #sets the Service Path (needed for System Console)
 
+set jtag_masters [get_service_paths master]
+
+# exit if no jtag masters are found
+if {$jtag_masters=={}} then {
+    puts "no masters found! did you run 'make program' ?"
+    puts "exiting ..."
+    after 3000
+    exit
+} else {
+    puts "masters found: $jtag_masters"
+}
+
+# load design
+set work [pwd]
+puts ""
+puts "working dir: $work"
+puts "loading design ..."
+design_load $work
+puts "done"
+
+puts "start test ..."
 set jtag_master [lindex [get_service_paths master] 0]
 
 #opens the service master (needed for system console)
@@ -105,4 +120,5 @@ send_message info "System Console test done"
 #closes service master (needed for system console)
 
 close_service master $jtag_master
+puts "test done."
 
