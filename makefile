@@ -37,12 +37,14 @@ clean:
 	rm -rf db
 	rm -rf greybox_tmp
 	rm -rf $(BUILD_PATH)/*
+	rm -rf *.rpt
+	rm -rf hs_err_pid*.log
+	rm -rf *~
 
 clean_qsys_system:
 	rm -rf soc_system/*
 	rm -rf soc_system.cmp
 	rm -rf soc_system.sopcinfo
-	rm -rf *.rpt
 
 tags:
 	exuberant-ctags -Re
