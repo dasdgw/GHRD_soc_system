@@ -13,6 +13,7 @@
 
 set sysid_base    0x10000
 set sys_timestamp 0x10004
+set led_base      0x10040
 
 # Set the values to write to the LED pio.
 #
@@ -56,6 +57,10 @@ puts ""
 
 puts "start test ..."
 
+proc led_loop {} {
+    global jtag_master
+    global led_base
+    global led_vals
 
 #sets up loop value
 set loopcount 0x00
@@ -64,14 +69,16 @@ set loopcount 0x00
 #used for testing, and thus the loopcount is very low
 #LED base address is 0x0001_0040 in Qsys, and thus set to 0x1_0040 in code
 
-while {$loopcount < 10} {
+while {$loopcount < 100} {
 	foreach val $led_vals {
-	master_write_8 $jtag_master 0x10040 $val
-	# send_message info $loopcount 
+	master_write_8 $jtag_master $led_base $val
+	#send_message info $loopcount 
 	incr loopcount
+	after 100
 	}
    }
-
+}
+led_loop;
 #sets up variables
 
 set lastSwitch 0x00
@@ -99,7 +106,7 @@ while {$loopcount1 < 100} {
  
 	if { $lastSwitch == $CurSwitch} {
 		# master_write_8 $jtag_master 0x1_0040 7
-		 master_write_8 $jtag_master 0x10040 $CurSwitch  
+		 master_write_8 $jtag_master $led_base $CurSwitch  
 		# 7 in binary is 0111
 		# send_message info "write the value of 7 (in binary)"
 		# send_message info "=CurSwitch" 
@@ -108,7 +115,7 @@ while {$loopcount1 < 100} {
 	}
 	if { $lastSwitch != $CurSwitch} {
 		# master_write_8 $jtag_master 0x1_0040 8
-		 master_write_8 $jtag_master 0x10040 $CurSwitch  
+		 master_write_8 $jtag_master $led_base $CurSwitch  
 		# send_message info "write the value of 1 (in binary) "	
 		# send_message info "lastSwitch" 
 		# send_message info $lastSwitch  
